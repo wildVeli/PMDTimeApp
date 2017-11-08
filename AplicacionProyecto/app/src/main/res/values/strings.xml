@@ -13,4 +13,6 @@
     <string name="hintNameNewTask">Nombre</string>
     <string name="hintDescriptionNewTask">Descripción</string>
     <string name="btnSaveTask">Guardar</string>
+    <string name="githublogo">gitHubLogo</string>
+    <string name="stopChrono">Cancelar Sesión</string>
 </resources>

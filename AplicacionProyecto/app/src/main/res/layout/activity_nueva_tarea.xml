@@ -14,25 +14,25 @@
     android:weightSum="1">
 
     <EditText
+        android:id="@+id/etNewTaksName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:ems="10"
-        android:id="@+id/editText"
-        android:hint="@string/hintNameNewTask" />
+        android:hint="@string/hintNameNewTask"
+        android:inputType="textPersonName" />
 
     <EditText
+        android:id="@+id/etNewTaskDesc"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
+        android:layout_height="21dp"
+        android:layout_weight="0.58"
         android:ems="10"
-        android:id="@+id/editText2"
         android:hint="@string/hintDescriptionNewTask"
-        android:layout_weight="0.58" />
+        android:inputType="textPersonName" />
 
     <Button
-        android:text="@string/btnSaveTask"
+        android:id="@+id/btnSaveTask"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button8" />
+        android:text="@string/btnSaveTask" />
 </LinearLayout>

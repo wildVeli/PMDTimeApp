@@ -9,24 +9,24 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:gravity="center">
+    android:gravity="center"
     tools:context="com.example.a2dam.aplicacionproyecto.MainActivity">
 
     <Button
-        android:text="@string/btnNewSesion"
+        android:id="@+id/btnnewSesion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button" />
+        android:text="@string/btnNewSesion" />
 
     <Button
-        android:text="@string/btnStats"
+        android:id="@+id/btnstats"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button2" />
+        android:text="@string/btnStats" />
 
     <Button
-        android:text="@string/btnCredits"
+        android:id="@+id/btncredits"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/button3" />
+        android:text="@string/btnCredits" />
 </LinearLayout>
