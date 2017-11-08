@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">AplicacionProyecto</string>
+    <string name="gracias">Gracias por utilizar esta aplicación, si quieres más de este desarrollador puedes visitar su GitHub</string>
+    <string name="textTarea">Elige una tarea</string>
+    <string name="textTime">Tiempo</string>
+    <string name="textTimeExplanation">Al seleccionar la opción \"No parar\" la aplicación continuara la sesión sin pausa alguna hasta que el usuario lo pare.</string>
+    <string name="btnStartTarea">Iniciar</string>
+    <string name="chbxNoStop">No parar</string>
+    <string name="btnNewSesion">Nueva sesión</string>
+    <string name="btnStats">Estadísticas</string>
+    <string name="btnCredits">Creditos</string>
+    <string name="txtStats">Horas dedicadas a cada tarea</string>
+    <string name="hintNameNewTask">Nombre</string>
+    <string name="hintDescriptionNewTask">Descripción</string>
+    <string name="btnSaveTask">Guardar</string>
+</resources>
