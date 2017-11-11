@@ -12,6 +12,7 @@
     tools:context="com.example.a2dam.aplicacionproyecto.Estasdisticas">
 
     <TabHost
+        android:id="@+id/tabsHost"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -37,14 +38,15 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="@string/txtStats"
+                        android:id="@+id/textView5"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView5" />
+                        android:text="@string/txtStats" />
 
                     <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:id="@+id/taskList"
+                        android:layout_width="340dp"
+                        android:layout_height="393dp" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -54,10 +56,10 @@
                     android:orientation="vertical">
 
                     <TextView
-                        android:text="TextView"
+                        android:id="@+id/textView6"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:id="@+id/textView6" />
+                        android:text="TextView" />
 
                     <ListView
                         android:layout_width="match_parent"

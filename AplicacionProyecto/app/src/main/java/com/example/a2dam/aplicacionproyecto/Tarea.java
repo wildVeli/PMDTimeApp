@@ -2,6 +2,8 @@ package com.example.a2dam.aplicacionproyecto;
 
 import android.text.Editable;
 
+import java.io.Serializable;
+
 /**
  * Created by Sergio on 08/11/2017.
  */
@@ -9,14 +11,18 @@ import android.text.Editable;
 /**
  * Clase para guardar las tareas y leerlas
  */
-public class Tarea {
+public class Tarea implements Serializable {
     private String name;
     private String description;
-    private double time;
+    private double time = 0;
 
     public Tarea(String name, String description) {
         this.name=name;
         this.description=description;
+    }
+
+    public Tarea() {
+
     }
 
     public String getName() {
