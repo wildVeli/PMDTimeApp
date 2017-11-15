@@ -43,6 +43,9 @@ public class Cronometro extends AppCompatActivity {
         stopChrono=(Button)findViewById(R.id.btnStopChrono);
         chrono=(Chronometer)findViewById(R.id.chronometer);
 
+        min=getIntent().getIntExtra("minutes",0);
+        sec=getIntent().getIntExtra("seconds",0);
+        nameCurrentTask=getIntent().getStringExtra("currentTask");
         stopChrono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -59,73 +62,80 @@ public class Cronometro extends AppCompatActivity {
         // + segundos*1000 que será la cantidad de segundos con los que iniciara el reloj)
         //debido a que es en milisegundos se utilizan dichas cifras, y en este caso que nos interesa que cuente hacia atras desde un tiempo alto
         // multiplicaremos por números negativos para conseguirlo
-        chrono.setBase(SystemClock.elapsedRealtime() - (5 * -60000 + sec * -1000));
+        chrono.setBase(SystemClock.elapsedRealtime() - (0 * -60000 + 1 * -1000));
         //setCountDown para llevar el reloj hacia atras es de la API 24, para anteriores CountDownTimer
         chrono.setCountDown(true);
+        chrono.start();
 
         chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
                 if(chronometer.getText().equals("00:00")){
-                   saveTaskTime();
+                    chrono.stop();
+                    try {
+                        saveTaskTime();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
         });
 
-        chrono.start();
+
 
     }
-    /*
-    public void onAnswer(String s){
-        if(s.equals("si")){
-            chrono.stop();
-        }
-    }
-    */
-    private void saveTaskTime(){
-        FileInputStream fis= null;;
-        ObjectInputStream ois= null;;
-        FileOutputStream fos = null;
-        ObjectOutputStream oos = null;
+
+   /*
+    LO HACE 2 VECES?
+     */
+    private void saveTaskTime() throws IOException {
+
+        File newFile = null;
+        FileOutputStream fos= null;
+        ObjectOutputStream oos=null;
+
+        File file = null;
+        FileInputStream fis = null;
+        ObjectInputStream ois = null;
         try{
             Tarea tarea;
-            File file= Environment.getExternalStorageDirectory();
-            file=new File(file,"tasks");
+            //File path= Environment.getExternalStorageDirectory();
+            newFile = new File("/storage/emulated/0/newTaskFile.txt");
+            file = new File("/storage/emulated/0/tasks.txt");
 
-            File save= Environment.getExternalStorageDirectory();
-            save=new File(save,"save");
+            if(file.exists()){
 
-            fis=new FileInputStream(file);
-            ois=new ObjectInputStream(fis);
+                fos = new FileOutputStream(newFile);
+                oos = new ObjectOutputStream(fos);
+                fis = new FileInputStream(file);
+                ois = new ObjectInputStream(fis);
+                do{
+                    tarea=new Tarea();
+                    tarea= (Tarea) ois.readObject();
+                    //PENSAR EN COMO PONER EL TIEMPO EN LA CLASE PARA CONTAR LOS MINUTOS Y SEGUNDOS QUE HA UTILIZADO
+                    if(tarea.getName().equals(nameCurrentTask)){
+                        tarea.setTime(tarea.getTime()+1);
+                    }
+                    oos.writeObject(tarea);
+                }while(true);
 
-            fos=new FileOutputStream(save);
-            oos=new ObjectOutputStream(fos);
-
-            while(true){
-                tarea= (Tarea) ois.readObject();
-                if(tarea.getName().equals(nameCurrentTask)){
-                    //Los tiempos serán minutos exactos siempre
-                    tarea.setTime(tarea.getTime()+min);
-                }
-                oos.writeObject(tarea);
-
+            }else{
             }
 
-        } catch(EOFException e){
-
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            oos.close();
-            fos.close();
+        } catch(EOFException e) {
             ois.close();
             fis.close();
+            fos.close();
+            oos.close();
+            file.delete();
+            newFile.renameTo(file);
 
+
+        } catch (ClassNotFoundException e1) {
+            e1.printStackTrace();
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }

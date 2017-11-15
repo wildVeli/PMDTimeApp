@@ -1,6 +1,7 @@
 package com.example.a2dam.aplicacionproyecto;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
@@ -39,7 +40,8 @@ public class NuevaTarea extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 askForPermissions();
-
+                Intent i = new Intent(getApplicationContext(),NuevaSesion.class);
+                startActivity(i);
             }
 
         });

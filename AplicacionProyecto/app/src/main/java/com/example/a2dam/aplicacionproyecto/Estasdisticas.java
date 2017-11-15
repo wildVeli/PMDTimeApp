@@ -65,7 +65,7 @@ public class Estasdisticas extends AppCompatActivity {
                 do{
                     tarea=new Tarea();
                     tarea= (Tarea) ois.readObject();
-                    list.add(tarea.getName()+"           "+tarea.getTime());
+                    list.add(tarea.getName()+"             "+tarea.getTime());
                     //Guardar en la lista
                 }while(true);
 
