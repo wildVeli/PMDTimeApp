@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -14,19 +14,28 @@
 
     <Button
         android:id="@+id/btnnewSesion"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="68dp"
+        android:layout_above="@+id/btnstats"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="50dp"
+        android:gravity="center_vertical|center_horizontal"
         android:text="@string/btnNewSesion" />
 
     <Button
         android:id="@+id/btnstats"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="68dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:text="@string/btnStats" />
 
     <Button
         android:id="@+id/btncredits"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="68dp"
+        android:layout_below="@+id/btnstats"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
         android:text="@string/btnCredits" />
-</LinearLayout>
+</RelativeLayout>

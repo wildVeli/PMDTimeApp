@@ -1,4 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="thanks">Thanks for using this app, you can see more of this developer at GitHub</string>
+    <string name="thanks">Thanks for using this app, you can see more of this developer at GitHub (click in the logo)</string>
+    <string name="noTaskforDelete">There is no task to erase</string>
+    <string name="toastActivity">Select or create one task</string>
+    <string name="app_name">TimeManager</string>
+    <string name="textTarea">Select task</string>
+    <string name="textTime">Time</string>
+    <string name="textTimeExplanation">Al seleccionar la opción \"No parar\" la aplicación continuara la sesión sin pausa alguna hasta que el usuario lo pare.</string>
+    <string name="btnStartTarea">Start</string>
+    <string name="chbxNoStop">No parar</string>
+    <string name="btnNewSesion">New sesion</string>
+    <string name="btnStats">Statistics</string>
+    <string name="btnCredits">credits</string>
+    <string name="txtStats">Time per task</string>
+    <string name="hintNameNewTask">Name</string>
+    <string name="hintDescriptionNewTask">description</string>
+    <string name="btnSaveTask">Save</string>
+    <string name="githublogo">gitHubLogo</string>
+    <string name="stopChrono">Cancel sesion</string>
+    <string name="cancelChrono">If you cancel the sesion time will not be saved, are you sure?</string>
+    <string name="si">yes</string>
+    <string name="no">no</string>
+    <string name="attention">Attention</string>
+    <string name="continueChrono">One more sesion</string>
+    <string name="finishSesion">Finish sesion</string>
+    <string name="estadistica1">Per Task</string>
+    <string name="estadistica2">Per Day</string>
 </resources>

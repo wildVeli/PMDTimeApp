@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.Window;
 import android.widget.Chronometer;
 
 /**
@@ -16,20 +17,30 @@ public class DialogFragmentCancelSesion extends DialogFragment {
 
     answerDialogFragmentCancelSesion answer;
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        Window window = getDialog().getWindow();
+        window.setBackgroundDrawableResource(android.R.color.black);
+
+    }
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("¿Seguro?");
-        builder.setMessage("Cancelar una sesión no guarda los tiempos ¿Está seguro?");
-        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+        builder.setTitle(R.string.attention);
+        builder.setMessage(R.string.cancelChrono);
+        builder.setPositiveButton(R.string.si, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 answer.onAnswer("si");
 
             }
         });
-        builder.setNegativeButton("no", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                answer.onAnswer("Es un chico");
+                answer.onAnswer("no");
 
             }
         });
@@ -42,6 +53,6 @@ public class DialogFragmentCancelSesion extends DialogFragment {
 
     public void  onAttach(Activity activity){
         super.onAttach(activity);
-//        answer=(answerDialogFragmentCancelSesion)activity;
+        answer=(answerDialogFragmentCancelSesion)activity;
     }
 }

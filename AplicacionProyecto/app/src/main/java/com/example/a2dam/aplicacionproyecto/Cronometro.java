@@ -4,12 +4,14 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.io.EOFException;
@@ -22,22 +24,25 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ChoiceFormat;
 
+import static android.widget.LinearLayout.*;
+
 /**
  * Se encarga de la cuenta atras de la sesión que se tiene seleccionada
  */
 //SIN PROBAR EL FICHERO
-public class Cronometro extends AppCompatActivity {
+public class Cronometro extends AppCompatActivity implements DialogFragmentCancelSesion.answerDialogFragmentCancelSesion{
 
     Chronometer chrono;
     Button stopChrono;
     int min;
     int sec;
     String nameCurrentTask;
+    Boolean chronoStoped=false;
 
     Chronometer chronometer;
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cronometro);
         stopChrono=(Button)findViewById(R.id.btnStopChrono);
@@ -46,32 +51,53 @@ public class Cronometro extends AppCompatActivity {
         min=getIntent().getIntExtra("minutes",0);
         sec=getIntent().getIntExtra("seconds",0);
         nameCurrentTask=getIntent().getStringExtra("currentTask");
+
         stopChrono.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
-                DialogFragmentCancelSesion cs=new DialogFragmentCancelSesion();
-                cs.show(getFragmentManager(),"cancelar");
-                chrono.stop();
-                */
+
+                if(!chronoStoped){
+                    DialogFragmentCancelSesion cs=new DialogFragmentCancelSesion();
+                    cs.show(getFragmentManager(),"cancelar");
+                    //chrono.stop();
+                }else{
+                    endActivityApp();
+                }
+
+
             }
         });
+
+
 
         //Establece donde inicia el chronometro, dado que se debe utilizar elapsedRealtime() para iniciar el chronometro
         //Recogemos la hora del sistema actual y le restamos (minutos*60000 que será la cantidad de minutos con la que iniciará el reloj
         // + segundos*1000 que será la cantidad de segundos con los que iniciara el reloj)
         //debido a que es en milisegundos se utilizan dichas cifras, y en este caso que nos interesa que cuente hacia atras desde un tiempo alto
         // multiplicaremos por números negativos para conseguirlo
-        chrono.setBase(SystemClock.elapsedRealtime() - (0 * -60000 + 1 * -1000));
+        chrono.setBase(SystemClock.elapsedRealtime() - (min * -60000 + sec * -1000));
         //setCountDown para llevar el reloj hacia atras es de la API 24, para anteriores CountDownTimer
         chrono.setCountDown(true);
         chrono.start();
 
+        final Button button=new Button(getApplicationContext());
+        button.setText(R.string.continueChrono);
+        final LinearLayout layout=(LinearLayout)findViewById(R.id.activity_cronometro);
+        final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
         chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
-                if(chronometer.getText().equals("00:00")){
+
+                if(chronometer.getText().equals("00:00")&&!chronoStoped){
+                    chronoStoped=true;
                     chrono.stop();
+                    layout.addView(button,lp);
+                    stopChrono.setText(R.string.finishSesion);
+                    Vibrator v = (Vibrator) getSystemService(getApplicationContext().VIBRATOR_SERVICE);
+                    // Vibrate for 500 milliseconds
+                    v.vibrate(500);
+
                     try {
                         saveTaskTime();
                     } catch (IOException e) {
@@ -82,13 +108,40 @@ public class Cronometro extends AppCompatActivity {
             }
         });
 
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              //  chrono.stop();
+                chrono.setBase(SystemClock.elapsedRealtime() - (min* -60000 + sec * -1000));
+                chrono.start();
+                chronoStoped=false;
+                layout.removeView(button);
+
+                stopChrono.setText(R.string.stopChrono);
+
+            }
+        });
 
 
     }
 
-   /*
-    LO HACE 2 VECES?
-     */
+    private void endActivityApp() {
+        this.finish();
+    }
+
+    public void onAnswer(String s){
+        switch (s){
+            case("si"):
+                chrono.stop();
+                this.finish();
+                break;
+            case("no"):
+
+                break;
+
+        }
+    }
+
     private void saveTaskTime() throws IOException {
 
         File newFile = null;
@@ -100,9 +153,10 @@ public class Cronometro extends AppCompatActivity {
         ObjectInputStream ois = null;
         try{
             Tarea tarea;
-            //File path= Environment.getExternalStorageDirectory();
-            newFile = new File("/storage/emulated/0/newTaskFile.txt");
-            file = new File("/storage/emulated/0/tasks.txt");
+
+            File path= Environment.getExternalStorageDirectory();
+            newFile = new File(path,"newTaskFile.txt");
+            file = new File(path,"tasks.txt");
 
             if(file.exists()){
 
@@ -113,9 +167,9 @@ public class Cronometro extends AppCompatActivity {
                 do{
                     tarea=new Tarea();
                     tarea= (Tarea) ois.readObject();
-                    //PENSAR EN COMO PONER EL TIEMPO EN LA CLASE PARA CONTAR LOS MINUTOS Y SEGUNDOS QUE HA UTILIZADO
+
                     if(tarea.getName().equals(nameCurrentTask)){
-                        tarea.setTime(tarea.getTime()+1);
+                        tarea.setTime(tarea.getTime()+min);
                     }
                     oos.writeObject(tarea);
                 }while(true);
@@ -140,4 +194,7 @@ public class Cronometro extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+
+
 }

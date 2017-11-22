@@ -4,7 +4,8 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="background_material_light">#000000</color>
-    <color name="colorboton">#FF0000</color>
-    <color name="textColor">#FFFFF0</color>
+    <color name="rojoOscuro">#9f0000</color>
+    <color name="textColor">#fffff0</color>
     <color name="textHintColor">#999999</color>
+    <color name="rojoClarito">#d40000</color>
 </resources>

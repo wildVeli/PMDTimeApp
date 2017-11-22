@@ -30,13 +30,13 @@ public class Estasdisticas extends AppCompatActivity {
 
         tabsHost.setup();
         TabSpec ts1=tabsHost.newTabSpec("Tab1");
-        ts1.setIndicator("Estadisticas");
+        ts1.setIndicator(getApplicationContext().getString(R.string.estadistica1));
         ts1.setContent(R.id.tab1);
         tabsHost.addTab(ts1);
 
         tabsHost.setup();
         TabSpec ts2=tabsHost.newTabSpec("Tab2");
-        ts2.setIndicator("Estadisticasaa");
+        ts2.setIndicator(getApplicationContext().getString(R.string.estadistica2));
         ts2.setContent(R.id.tab2);
         tabsHost.addTab(ts2);
         try {
@@ -66,6 +66,7 @@ public class Estasdisticas extends AppCompatActivity {
                     tarea=new Tarea();
                     tarea= (Tarea) ois.readObject();
                     list.add(tarea.getName()+"             "+tarea.getTime());
+
                     //Guardar en la lista
                 }while(true);
 

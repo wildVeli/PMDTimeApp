@@ -1,6 +1,8 @@
 <resources>
-    <string name="app_name">AplicacionProyecto</string>
-    <string name="gracias">Gracias por utilizar esta aplicación, si quieres más de este desarrollador puedes visitar su GitHub</string>
+    <string name="noTaskforDelete">No existen tareas para borrar</string>
+    <string name="toastActivity">Seleccione o cree una tarea</string>
+    <string name="app_name">TimeManager</string>
+    <string name="thanks">Gracias por utilizar esta aplicación, si quieres más de este desarrollador puedes visitar su GitHub(pulsa en el logo)</string>
     <string name="textTarea">Elige una tarea</string>
     <string name="textTime">Tiempo</string>
     <string name="textTimeExplanation">Al seleccionar la opción \"No parar\" la aplicación continuara la sesión sin pausa alguna hasta que el usuario lo pare.</string>
@@ -8,11 +10,19 @@
     <string name="chbxNoStop">No parar</string>
     <string name="btnNewSesion">Nueva sesión</string>
     <string name="btnStats">Estadísticas</string>
-    <string name="btnCredits">Creditos</string>
+    <string name="btnCredits">Créditos</string>
     <string name="txtStats">Horas dedicadas a cada tarea</string>
     <string name="hintNameNewTask">Nombre</string>
     <string name="hintDescriptionNewTask">Descripción</string>
     <string name="btnSaveTask">Guardar</string>
     <string name="githublogo">gitHubLogo</string>
     <string name="stopChrono">Cancelar Sesión</string>
+    <string name="cancelChrono">Cancelar una sesión no guarda los tiempos ¿Está seguro?</string>
+    <string name="si">si</string>
+    <string name="no">no</string>
+    <string name="attention">Atención</string>
+    <string name="continueChrono">Otra sesión más</string>
+    <string name="finishSesion">Terminar sesión</string>
+    <string name="estadistica1">Por Tarea</string>
+    <string name="estadistica2">Por día</string>
 </resources>

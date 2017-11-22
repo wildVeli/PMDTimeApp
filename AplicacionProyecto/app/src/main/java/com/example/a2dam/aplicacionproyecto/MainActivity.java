@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setTheme(android.R.style.Theme_Holo);
         setContentView(R.layout.activity_main);
         newSesion= (Button) findViewById(R.id.btnnewSesion);
         stats=(Button)findViewById(R.id.btnstats);

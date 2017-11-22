@@ -1,12 +1,16 @@
 package com.example.a2dam.aplicacionproyecto;
 
 import android.content.Intent;
+import android.os.Environment;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
+
 import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
@@ -31,8 +35,8 @@ public class NuevaSesion extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+      //  setTheme(android.R.style.Theme_Holo);
         setContentView(R.layout.activity_nueva_sesion);
-
         btnNewTask=(Button)findViewById(R.id.btnNewTask);
         btnNewTask.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,14 +52,20 @@ public class NuevaSesion extends AppCompatActivity {
             public void onClick(View view) {
                 int sec=Integer.valueOf(spSelectTime.getSelectedItem().toString().substring(3,5));
                 int min=Integer.valueOf(spSelectTime.getSelectedItem().toString().substring(0,2));
-                spTaskActualSelected=spSelectTask.getSelectedItem().toString();
+                if(spSelectTask.getSelectedItem()==null){
+                    Toast.makeText(getApplicationContext(),R.string.toastActivity, Toast.LENGTH_LONG).show();
+                }else{
+                    spTaskActualSelected=spSelectTask.getSelectedItem().toString();
+                    Intent i = new Intent(getApplicationContext(),Cronometro.class);
+                    i.putExtra("minutes",min);
+                    i.putExtra("seconds",sec);
+                    i.putExtra("currentTask",spTaskActualSelected);
+                    startActivity(i);
+
+                }
 
 
-                Intent i = new Intent(getApplicationContext(),Cronometro.class);
-                i.putExtra("minutes",min);
-                i.putExtra("seconds",sec);
-                i.putExtra("currentTask",spTaskActualSelected);
-                startActivity(i);
+
             }
         });
 
@@ -92,54 +102,59 @@ public class NuevaSesion extends AppCompatActivity {
 
     private void deleteTask() throws IOException {
 
-        spTaskActualSelected=spSelectTask.getSelectedItem().toString();
+        if(spSelectTask.getSelectedItem()==null){
+            Toast.makeText(getApplicationContext(),R.string.noTaskforDelete, Toast.LENGTH_LONG).show();
+        }else {
+            spTaskActualSelected=spSelectTask.getSelectedItem().toString();
 
-        File newFile = null;
-        FileOutputStream fos= null;
-        ObjectOutputStream oos=null;
+            File newFile = null;
+            FileOutputStream fos= null;
+            ObjectOutputStream oos=null;
 
-        File file = null;
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try{
-            Tarea tarea;
-            //File path= Environment.getExternalStorageDirectory();
-            newFile = new File("/storage/emulated/0/newTaskFile.txt");
-            file = new File("/storage/emulated/0/tasks.txt");
+            File file = null;
+            FileInputStream fis = null;
+            ObjectInputStream ois = null;
+            try{
+                Tarea tarea;
+                File path= Environment.getExternalStorageDirectory();
+                newFile = new File(path,"newTaskFile.txt");
+                file = new File(path,"tasks.txt");
 
-            if(file.exists()){
+                if(file.exists()){
 
-                fos = new FileOutputStream(newFile);
-                oos = new ObjectOutputStream(fos);
-                fis = new FileInputStream(file);
-                ois = new ObjectInputStream(fis);
-                do{
-                    tarea=new Tarea();
-                    tarea= (Tarea) ois.readObject();
-                    if(!tarea.getName().equals(spTaskActualSelected)){
-                        oos.writeObject(tarea);
-                    }
-                }while(true);
+                    fos = new FileOutputStream(newFile);
+                    oos = new ObjectOutputStream(fos);
+                    fis = new FileInputStream(file);
+                    ois = new ObjectInputStream(fis);
+                    do{
+                        tarea=new Tarea();
+                        tarea= (Tarea) ois.readObject();
+                        if(!tarea.getName().equals(spTaskActualSelected)){
+                            oos.writeObject(tarea);
+                        }
+                    }while(true);
 
-            }else{
+                }else{
+                }
+
+            } catch(EOFException e) {
+                ois.close();
+                fis.close();
+                fos.close();
+                oos.close();
+                file.delete();
+                newFile.renameTo(file);
+
+
+            } catch (ClassNotFoundException e1) {
+                e1.printStackTrace();
+            }catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-
-        } catch(EOFException e) {
-            ois.close();
-            fis.close();
-            fos.close();
-            oos.close();
-            file.delete();
-            newFile.renameTo(file);
-
-
-        } catch (ClassNotFoundException e1) {
-            e1.printStackTrace();
-        }catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
     private void getTasks() throws IOException {

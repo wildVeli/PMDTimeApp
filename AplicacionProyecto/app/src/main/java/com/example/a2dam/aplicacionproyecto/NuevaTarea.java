@@ -40,8 +40,7 @@ public class NuevaTarea extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 askForPermissions();
-                Intent i = new Intent(getApplicationContext(),NuevaSesion.class);
-                startActivity(i);
+
             }
 
         });
@@ -65,6 +64,7 @@ public class NuevaTarea extends AppCompatActivity {
 
         }else{
             saveTask();
+
         }
 
     }
@@ -79,6 +79,7 @@ public class NuevaTarea extends AppCompatActivity {
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     saveTask();
+
                 } else {
 
                     // permission denied, boo! Disable the
@@ -107,10 +108,8 @@ public class NuevaTarea extends AppCompatActivity {
 
             File path= Environment.getExternalStorageDirectory();
             File file=new File(path,"tasks.txt");
-            //File file = new File("hola.txt");
             FileOutputStream fos;
             Tarea tarea=new Tarea(taskName.getText().toString(),taskDescription.getText().toString());
-           // file.delete();
 
             if(file.exists()){
                 fos=new FileOutputStream(file,true);
@@ -131,6 +130,8 @@ public class NuevaTarea extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        Intent i = new Intent(getApplicationContext(),NuevaSesion.class);
+        startActivity(i);
+        this.finish();
     }
 }
