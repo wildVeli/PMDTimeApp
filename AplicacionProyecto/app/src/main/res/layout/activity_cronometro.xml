@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_cronometro"
     android:layout_width="match_parent"
@@ -12,12 +13,24 @@
     tools:context="com.example.a2dam.aplicacionproyecto.Cronometro"
     android:gravity="center">
 
+    <ImageView
+        android:id="@+id/imageViewFlami"
+        android:layout_width="119dp"
+        android:layout_height="113dp"
+        app:srcCompat="@android:color/transparent" />
+
     <Chronometer
         android:id="@+id/chronometer"
         android:layout_width="match_parent"
-        android:layout_height="434dp"
+        android:layout_height="218dp"
         android:gravity="center"
         android:textSize="50dp" />
+
+    <ImageView
+        android:id="@+id/transitionFlami"
+        android:layout_width="115dp"
+        android:layout_height="102dp"
+        app:srcCompat="@android:color/transparent" />
 
     <Button
         android:id="@+id/btnStopChrono"

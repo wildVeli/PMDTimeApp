@@ -1,7 +1,9 @@
 package com.example.a2dam.aplicacionproyecto;
 
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.TransitionDrawable;
+import android.media.MediaPlayer;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.os.Environment;
 import android.os.SystemClock;
 import android.os.Vibrator;
@@ -11,8 +13,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+
+import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import java.io.EOFException;
 import java.io.File;
@@ -22,7 +25,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.text.ChoiceFormat;
+import java.util.ArrayList;
 
 import static android.widget.LinearLayout.*;
 
@@ -38,6 +41,10 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
     int sec;
     String nameCurrentTask;
     Boolean chronoStoped=false;
+    MediaPlayer mediaPlayer;
+    ArrayList<Integer> songs;
+    AnimationDrawable flami;
+    TransitionDrawable transitionDrawable;
 
     Chronometer chronometer;
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -47,6 +54,9 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
         setContentView(R.layout.activity_cronometro);
         stopChrono=(Button)findViewById(R.id.btnStopChrono);
         chrono=(Chronometer)findViewById(R.id.chronometer);
+        //Añadido de musica
+        songs = new ArrayList<Integer>();
+        songs.add(R.raw.titlescreen);
 
         min=getIntent().getIntExtra("minutes",0);
         sec=getIntent().getIntExtra("seconds",0);
@@ -61,12 +71,19 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
                     cs.show(getFragmentManager(),"cancelar");
                     //chrono.stop();
                 }else{
+                    //Si se termina la sesión antes de acabar la musica se para el reproductor
+                    if(mediaPlayer.isPlaying()) {
+                        mediaPlayer.release();
+                    }
                     endActivityApp();
                 }
 
 
             }
         });
+        //Tiempo modificado para probar aplicación
+        min=0;
+        sec=10;
 
 
 
@@ -85,6 +102,20 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
         final LinearLayout layout=(LinearLayout)findViewById(R.id.activity_cronometro);
         final LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
+        //Animación
+        //Donde se añadira la animación
+        final ImageView image =(android.widget.ImageView) findViewById(R.id.imageViewFlami);
+        image.setBackgroundResource(R.drawable.animation);
+        flami = (AnimationDrawable) image.getBackground();
+        image.setVisibility(View.INVISIBLE);
+
+        //Transition
+        ImageView transition = (android.widget.ImageView)findViewById(R.id.transitionFlami);
+        transitionDrawable = (TransitionDrawable) getDrawable(R.drawable.transition);
+        transition.setImageDrawable(transitionDrawable);
+        transitionDrawable.setCrossFadeEnabled(true);
+
+
         chrono.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
             public void onChronometerTick(Chronometer chronometer) {
@@ -98,6 +129,17 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
                     // Vibrate for 500 milliseconds
                     v.vibrate(500);
 
+                    //Animación
+                    image.setVisibility(View.VISIBLE);
+                    flami.start();
+                    //Transition
+                    transitionDrawable.startTransition(2000);
+
+
+                    //Comienza la música al acabar la tarea
+                    mediaPlayer= MediaPlayer.create(getApplicationContext(),songs.get(0));
+                    mediaPlayer.start();
+
                     try {
                         saveTaskTime();
                     } catch (IOException e) {
@@ -107,7 +149,7 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
                 }
             }
         });
-
+        //Reinicia la sesión de cronometro
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,6 +161,17 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
 
                 stopChrono.setText(R.string.stopChrono);
 
+                //Para y esconde la animación
+                flami.stop();
+                image.setVisibility(View.INVISIBLE);
+
+                //Si la musica sigue sonando al reiniciar la sesión, para
+                if(mediaPlayer.isPlaying()) {
+                    mediaPlayer.release();
+                }
+
+                //Transition reverse
+                transitionDrawable.reverseTransition(3000);
             }
         });
 
