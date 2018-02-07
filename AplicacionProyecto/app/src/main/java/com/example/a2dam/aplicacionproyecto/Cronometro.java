@@ -105,13 +105,13 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
         //Animación
         //Donde se añadira la animación
         final ImageView image =(android.widget.ImageView) findViewById(R.id.imageViewFlami);
-        image.setBackgroundResource(R.drawable.animation);
+        image.setBackgroundResource(R.drawable.animationflami);
         flami = (AnimationDrawable) image.getBackground();
         image.setVisibility(View.INVISIBLE);
 
         //Transition
         ImageView transition = (android.widget.ImageView)findViewById(R.id.transitionFlami);
-        transitionDrawable = (TransitionDrawable) getDrawable(R.drawable.transition);
+        transitionDrawable = (TransitionDrawable) getDrawable(R.drawable.transitionflami);
         transition.setImageDrawable(transitionDrawable);
         transitionDrawable.setCrossFadeEnabled(true);
 
