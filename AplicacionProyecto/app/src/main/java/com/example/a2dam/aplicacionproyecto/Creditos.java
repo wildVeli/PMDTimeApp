@@ -24,7 +24,7 @@ public class Creditos extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_creditos);
-        //Blue transition
+        //Git transition
         ImageView gitHub = (android.widget.ImageView)findViewById(R.id.btnGitHub);
         transitionDrawable = (TransitionDrawable) getDrawable(R.drawable.gitmark);
         gitHub.setImageDrawable(transitionDrawable);

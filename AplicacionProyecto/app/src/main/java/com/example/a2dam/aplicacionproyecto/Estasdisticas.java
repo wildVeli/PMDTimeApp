@@ -1,6 +1,5 @@
 package com.example.a2dam.aplicacionproyecto;
 
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ArrayAdapter;
@@ -14,19 +13,32 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import android.widget.TabHost.TabSpec;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 public class Estasdisticas extends AppCompatActivity {
 
     ListView taskList;
+    ListView taskTime;
+
     TabHost tabsHost;
+    HashMap<String,Double> tasks = new HashMap<String,Double>();
+    ArrayList<String> tasksName= new ArrayList<String>();
+
+    ArrayAdapter<String>adapter = null;
+    ArrayAdapter<String>adapter2 = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_estasdisticas);
         tabsHost=(TabHost)findViewById(R.id.tabsHost);
         taskList=(ListView)findViewById(R.id.taskList);
+        taskTime = (ListView)findViewById(R.id.taskTime);
 
         tabsHost.setup();
         TabSpec ts1=tabsHost.newTabSpec("Tab1");
@@ -40,7 +52,28 @@ public class Estasdisticas extends AppCompatActivity {
         ts2.setContent(R.id.tab2);
         tabsHost.addTab(ts2);
         try {
+
             getTasks();
+            List<String> taskNameList=new ArrayList<String>();
+            List<String> taskTimeList=new ArrayList<>();
+
+            Collections.sort(tasksName, new Comparator<String>()
+            {
+                @Override
+                public int compare(String text1, String text2)
+                {
+                    return text1.compareToIgnoreCase(text2);
+                }
+            });
+            for(String task: tasksName){
+                taskNameList.add(task);
+                taskTimeList.add(tasks.get(task).toString());
+            }
+            adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.lista_final_estadisticas,taskNameList);
+            adapter2 = new ArrayAdapter<String>(getApplicationContext(), R.layout.lista_final_estadisticas,taskTimeList);
+            taskList.setAdapter(adapter);
+            taskTime.setAdapter(adapter2);
+
         } catch (IOException e) {
            // e.printStackTrace();
         }
@@ -49,8 +82,8 @@ public class Estasdisticas extends AppCompatActivity {
     private void getTasks() throws IOException {
 
 
-        ArrayAdapter<String>adapter = null;
-        List<String> list=new ArrayList<String>();
+
+
         FileInputStream fis = null;
         ObjectInputStream ois = null;
         try{
@@ -65,7 +98,9 @@ public class Estasdisticas extends AppCompatActivity {
                 do{
                     tarea=new Tarea();
                     tarea= (Tarea) ois.readObject();
-                    list.add(tarea.getName()+"             "+tarea.getTime());
+                    tasks.put(tarea.getName(),tarea.getTime());
+                    tasksName.add(tarea.getName());
+
 
                     //Guardar en la lista
                 }while(true);
@@ -76,8 +111,7 @@ public class Estasdisticas extends AppCompatActivity {
         } catch(EOFException e) {
             ois.close();
             fis.close();
-            adapter = new ArrayAdapter<String>(getApplicationContext(), R.layout.lista_final_estadisticas,list);
-            taskList.setAdapter(adapter);
+
 
         } catch (ClassNotFoundException e1) {
             e1.printStackTrace();

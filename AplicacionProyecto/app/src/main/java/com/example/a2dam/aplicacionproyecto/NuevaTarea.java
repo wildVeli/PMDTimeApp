@@ -18,6 +18,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 
+import static com.example.a2dam.aplicacionproyecto.NuevaSesion.tareas;
+
 
 /**
  * Se encarga de añadir una nueva tarea a las tareas del usuario.
@@ -27,6 +29,8 @@ public class NuevaTarea extends AppCompatActivity {
     EditText taskName;
     EditText taskDescription;
     Button btnSaveTask;
+    boolean repeatedTask = false;
+
     private static final int MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class NuevaTarea extends AppCompatActivity {
             }
 
         });
+        System.out.println("size " +tareas.size());
 
     }
 
@@ -54,6 +59,7 @@ public class NuevaTarea extends AppCompatActivity {
     //Pedir permisos de escritura nos otorga los de lectura tambien
     private void askForPermissions() {
         int permisos=0;
+        repeatedTask = false;
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
@@ -63,22 +69,47 @@ public class NuevaTarea extends AppCompatActivity {
                     MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE);
 
         }else{
-            saveTask();
+            for(String tarea:tareas){
+                if(tarea.toLowerCase().equals(taskName.getText().toString().toLowerCase())){
+                    DialogFragmentNuevaTarea cs=new DialogFragmentNuevaTarea();
+                    cs.show(getFragmentManager(),"repetido");
+                    repeatedTask = true;
+                    break;
+                }
+            }
+            if(!repeatedTask){
+                saveTask();
+            }
+
 
         }
 
     }
 
+
+
     //Recoge el resultado del dialog fragment de los permisos
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
+        repeatedTask = false;
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_WRITE_EXTERNAL_STORAGE: {
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    saveTask();
+                    for(String tarea:tareas){
+                        if(tarea.toLowerCase().equals(taskName.getText().toString().toLowerCase())){
+                            DialogFragmentNuevaTarea cs=new DialogFragmentNuevaTarea();
+                            cs.show(getFragmentManager(),"repetido");
+                            repeatedTask = true;
+                            break;
+                        }
+                    }
+                    if(!repeatedTask){
+                        saveTask();
+                    }
+
 
                 } else {
 

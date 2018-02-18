@@ -82,8 +82,8 @@ public class Cronometro extends AppCompatActivity implements DialogFragmentCance
             }
         });
         //Tiempo modificado para probar aplicación
-        min=0;
-        sec=10;
+          min=1;
+
 
 
 

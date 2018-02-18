@@ -31,6 +31,7 @@ public class NuevaSesion extends AppCompatActivity {
     Spinner spSelectTime;
     Button btnDeleteTask;
     String spTaskActualSelected;
+    static ArrayList<String> tareas = new ArrayList<String>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class NuevaSesion extends AppCompatActivity {
 
     }
 
+
     private void deleteTask() throws IOException {
 
         if(spSelectTask.getSelectedItem()==null){
@@ -159,7 +161,7 @@ public class NuevaSesion extends AppCompatActivity {
 
     private void getTasks() throws IOException {
 
-
+        tareas.clear();
         ArrayAdapter<String>adapter = null;
         ArrayList<String> listSpinner=new ArrayList<String>();
         FileInputStream fis = null;
@@ -176,6 +178,7 @@ public class NuevaSesion extends AppCompatActivity {
                 do{
                     tarea=new Tarea();
                     tarea= (Tarea) ois.readObject();
+                    tareas.add(tarea.getName());
                     listSpinner.add(tarea.getName());
                     //Guardar en la lista
                 }while(true);
